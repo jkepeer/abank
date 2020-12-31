@@ -10,6 +10,7 @@
 #$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $password
 # второй способ
 # простой способ но мненее безопасный пароль хранится в открытом виде 
+# после нового года добавлю обработкуиисключений и логирование
 $date=Get-Date -Format "HHmmddMMyyyy" 
 $PlainPassword = "11"
 $SecurePassword = $PlainPassword | ConvertTo-SecureString -AsPlainText -Force
