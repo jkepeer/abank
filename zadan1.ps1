@@ -10,6 +10,7 @@
 #$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $password
 # второй способ
 # простой способ но мненее безопасный пароль хранится в открытом виде 
+# в реальной среде логи собирал бы в систему мониторинга
 $err="не удальсь выполнить копирование сервер - "
 $date=Get-Date -Format "HHmmddMMyyyy" 
 $PlainPassword = "11"
