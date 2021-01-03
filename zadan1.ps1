@@ -1,4 +1,4 @@
-﻿#предполагается, что все сервера в одном домене и используется учетка у которой есть права на эти операции
+#предполагается, что все сервера в одном домене и используется учетка у которой есть права на эти операции
 #пароль  в зашифрованном файле и от туда его вычитывать
 #типа такой 
 #$credentials = Get-Credential MyDomain\UserForCopy
@@ -10,15 +10,15 @@
 #$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $password
 # второй способ
 # простой способ но мненее безопасный пароль хранится в открытом виде 
-# после нового года добавлю обработкуиисключений и логирование
+$err="не удальсь выполнить копирование сервер - "
 $date=Get-Date -Format "HHmmddMMyyyy" 
 $PlainPassword = "11"
 $SecurePassword = $PlainPassword | ConvertTo-SecureString -AsPlainText -Force
 $UserName = "MyDomain\UserForCopy"
 $Credentials = New-Object System.Management.Automation.PSCredential `
      -ArgumentList $UserName, $SecurePassword
-
-for ([int]$i = 1; $i -lt 4; $i++) {
+try{
+ for ([int]$i = 1; $i -lt 4; $i++) {
       $servername='appserver'  
       $servername=$servername+$i
        $session = New-PSSession -ComputerName $servername -Credential $credentials 
@@ -33,5 +33,8 @@ for ([int]$i = 1; $i -lt 4; $i++) {
                Copy-Item -Path C:\Update\bin -Destination C:\app\server -Recurse -Force  -ToSession $session
                Copy-Item -Path C:\Update\config -Destination C:\app\server -Recurse -Force  -ToSession $session
                }
-
-}
+     }
+    }
+catch {
+    "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $err $servername" | ac c:\backup\log.log -enc Unicode
+     }
